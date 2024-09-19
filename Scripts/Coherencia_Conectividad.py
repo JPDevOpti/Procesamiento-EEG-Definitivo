@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import grangercausalitytests
+from scipy.stats import kurtosis
 
 def calcular_conectividad_y_graficar(df, metodo='funcional',canales_seleccionados=None):
     """
@@ -86,4 +87,23 @@ def calcular_conectividad_y_graficar_sin_numeros(df, metodo='funcional', canales
     sns.heatmap(conectividades, annot=False, cmap="coolwarm", vmin=-1, vmax=1, linewidths=0.5)
     plt.title(titulo)
     plt.show()
+
+def calcular_kurtosis(df):
+    """
+    Calcula la kurtosis de cada canal en un DataFrame de señales EEG
+    y devuelve los resultados en una fila.
+
+    Parameters:
+    - df: DataFrame con señales EEG, donde cada columna es un canal.
+
+    Returns:
+    - DataFrame con la kurtosis de cada canal en una fila.
+    """
+    # Calcula la kurtosis para cada columna (canal)
+    kurtosis_values = df.apply(kurtosis)
+
+    # Convierte la serie en un DataFrame y transponer para que sea una fila
+    kurtosis_df = pd.DataFrame(kurtosis_values).T
+    
+    return kurtosis_df
 

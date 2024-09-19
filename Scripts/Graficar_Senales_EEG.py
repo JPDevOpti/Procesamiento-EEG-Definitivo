@@ -103,3 +103,5 @@ def graficar_eeg_sujeto(df_sujeto, frecuencia_muestreo=1000, canales=4, duracion
     plt.legend()
     plt.grid(True)
     plt.show()
+    
+    
