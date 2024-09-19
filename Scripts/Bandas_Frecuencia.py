@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import welch
+import tkinter as tk
+from tkinter import filedialog
 
 def potencia_banda(frecuencias, psd, banda):
     idx_banda = np.logical_and(frecuencias >= banda[0], frecuencias <= banda[1])
@@ -59,3 +61,26 @@ def graficar_histograma_promedio(df_potencias_banda):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.show()
+
+
+def guardar_csv(df):
+    """
+    Abre una ventana para seleccionar la ubicación y nombre del archivo CSV,
+    y la mantiene al frente de todas las ventanas para mayor visibilidad.
+
+    Parameters:
+    - df: DataFrame que se desea guardar.
+    """
+    root = tk.Tk()
+    root.withdraw() 
+    root.attributes('-topmost', True) 
+    nombre_archivo = filedialog.asksaveasfilename(defaultextension=".csv",
+                                                  filetypes=[("CSV files", "*.csv"), ("All files", "*.*")])
+    
+    if nombre_archivo:
+        df.to_csv(nombre_archivo, index=True)  
+        print(f"Archivo guardado con éxito en: {nombre_archivo}")
+    else:
+        print("No se seleccionó ninguna ubicación.")
+    
+    root.destroy()
