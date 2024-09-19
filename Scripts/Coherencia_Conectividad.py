@@ -99,11 +99,29 @@ def calcular_kurtosis(df):
     Returns:
     - DataFrame con la kurtosis de cada canal en una fila.
     """
-    # Calcula la kurtosis para cada columna (canal)
     kurtosis_values = df.apply(kurtosis)
-
-    # Convierte la serie en un DataFrame y transponer para que sea una fila
     kurtosis_df = pd.DataFrame(kurtosis_values).T
-    
     return kurtosis_df
+
+def graficar_kurtosis(df):
+    """
+    Calcula la kurtosis y la grafica en un gráfico de barras.
+
+    Parameters:
+    - df: DataFrame con señales EEG, donde cada columna es un canal.
+    """
+    kurtosis_result = calcular_kurtosis(df)
+
+    # Transponer para que los nombres de los canales sean el eje x
+    kurtosis_result = kurtosis_result.T
+    kurtosis_result.columns = ['Kurtosis']
+
+    plt.figure(figsize=(15, 10))
+    sns.barplot(x=kurtosis_result.index, y=kurtosis_result['Kurtosis'], palette='coolwarm')
+    plt.title('Kurtosis de los Canales EEG')
+    plt.xlabel('Canales')
+    plt.ylabel('Kurtosis')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y')
+    plt.show()
 
